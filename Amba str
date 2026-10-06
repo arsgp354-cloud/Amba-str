@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amba STR - Jasa Joki</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       INTRO AMBA STORE
+    ========================= */
+
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+
+      background:
+        radial-gradient(circle at center, #312e81, #0f172a 70%);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity .8s ease,
+        visibility .8s ease;
+    }
+
+    #intro.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .store-animation {
+      text-align: center;
+    }
+
+    .store-animation span {
+      display: inline-block;
+
+      font-weight: 900;
+      color: white;
+
+      opacity: 0;
+
+      transform: scale(.2) translateY(30px);
+
+      text-shadow:
+        0 0 5px #fff,
+        0 0 15px #8b5cf6,
+        0 0 30px #6366f1;
+
+      transition:
+        opacity .25s ease,
+        transform .35s cubic-bezier(.17,.67,.38,1.4);
+    }
+
+    /* AMBA */
+
+    .amba span {
+      font-size: clamp(55px, 15vw, 110px);
+      margin: 0 3px;
+    }
+
+    /* STORE */
+
+    .store {
+      margin-top: 5px;
+    }
+
+    .store span {
+      font-size: clamp(30px, 8vw, 65px);
+      margin: 0 2px;
+      color: #c4b5fd;
+    }
+
+    /* Huruf aktif */
+
+    .store-animation span.show {
+      opacity: 1;
+
+      transform: scale(1) translateY(0);
+
+      animation: hurufGlow .45s ease;
+    }
+
+    @keyframes hurufGlow {
+
+      0% {
+        transform: scale(.5);
+        filter: brightness(2);
+      }
+
+      50% {
+        transform: scale(1.25);
+        filter: brightness(2.5);
+      }
+
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+
+    }
+
+    /* Tombol Lewati */
+
+    .skip-btn {
+      position: absolute;
+
+      top: 25px;
+      right: 20px;
+
+      width: auto;
+
+      padding: 10px 18px;
+
+      background: rgba(255,255,255,.1);
+
+      border:
+        1px solid rgba(255,255,255,.25);
+
+      border-radius: 20px;
+
+      color: white;
+
+      font-size: 14px;
+
+      cursor: pointer;
+
+      backdrop-filter: blur(10px);
+    }
+
+    .skip-btn:hover {
+      background: rgba(255,255,255,.25);
+      transform: none;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      text-align: center;
+      padding: 35px 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #7c3aed,
+          #2563eb
+        );
+
+      border-radius: 0 0 30px 30px;
+
+      box-shadow:
+        0 5px 20px rgba(0,0,0,.3);
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: #e0e7ff;
+    }
+
+
+    /* =========================
+       CONTAINER
+    ========================= */
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .category {
+      margin-bottom: 30px;
+    }
+
+    .category h2 {
+      margin-bottom: 15px;
+
+      color: #c4b5fd;
+
+      border-left:
+        5px solid #8b5cf6;
+
+      padding-left: 12px;
+    }
+
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background:
+        rgba(255,255,255,.08);
+
+      border:
+        1px solid rgba(255,255,255,.1);
+
+      border-radius: 18px;
+
+      padding: 20px;
+      margin-bottom: 14px;
+
+      backdrop-filter: blur(10px);
+
+      transition: .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+
+      background:
+        rgba(255,255,255,.12);
+    }
+
+    .card h3 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      color: #4ade80;
+
+      font-size: 20px;
+
+      font-weight: bold;
+
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #cbd5e1;
+
+      margin-bottom: 15px;
+
+      line-height: 1.5;
+    }
+
+
+    /* =========================
+       BUTTON
+    ========================= */
+
+    button {
+      width: 100%;
+
+      border: none;
+
+      border-radius: 12px;
+
+      padding: 13px;
+
+      background: #22c55e;
+
+      color: white;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: .2s;
+    }
+
+    button:hover {
+      background: #16a34a;
+
+      transform: scale(1.02);
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+
+      padding: 30px 15px;
+
+      color: #94a3b8;
+    }
+
+    .wa {
+      color: #4ade80;
+
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- ==================================
+       INTRO AMBA STORE
+  =================================== -->
+
+  <div id="intro">
+
+    <div class="store-animation">
+
+      <div class="amba">
+
+        <span>A</span>
+        <span>M</span>
+        <span>B</span>
+        <span>A</span>
+
+      </div>
+
+
+      <div class="store">
+
+        <span>S</span>
+        <span>T</span>
+        <span>O</span>
+        <span>R</span>
+        <span>E</span>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="skip-btn"
+      onclick="skipIntro()">
+
+      Lewati ✕
+
+    </button>
+
+  </div>
+
+
+  <!-- ==================================
+       HEADER
+  =================================== -->
+
+  <header>
+
+    <h1>
+      🔥 AMBA STR 🔥
+    </h1>
+
+    <p>
+      Jasa Joki • VIP • AFK •
+      Paket Break and Steal Eggs
+    </p>
+
+  </header>
+
+
+  <!-- ==================================
+       CONTENT
+  =================================== -->
+
+  <main class="container">
+
+
+    <!-- JOKI OJEK -->
+
+    <section class="category">
+
+      <h2>
+        🛵 Jasa Joki Ojek by Amba STR
+      </h2>
+
+
+      <div class="card">
+
+        <h3>
+          Joki Ojek 1
+        </h3>
+
+        <div class="price">
+          Rp1.500
+        </div>
+
+        <div class="description">
+          1–5B • 2–3 Pet
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki Ojek by Amba STR - Rp1.500 (1–5B, 2–3 Pet)'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          Joki Ojek 2
+        </h3>
+
+        <div class="price">
+          Rp2.500
+        </div>
+
+        <div class="description">
+          5–10B • 1–2 Pet
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki Ojek by Amba STR - Rp2.500 (5–10B, 1–2 Pet)'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          Joki Ojek 3
+        </h3>
+
+        <div class="price">
+          Rp3.500
+        </div>
+
+        <div class="description">
+          10–15B • 1–2 Pet
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki Ojek by Amba STR - Rp3.500 (10–15B, 1–2 Pet)'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- VIP -->
+
+    <section class="category">
+
+      <h2>
+        👑 Jasa Joki VIP
+      </h2>
+
+
+      <div class="card">
+
+        <h3>
+          VIP 5 Menit
+        </h3>
+
+        <div class="price">
+          Rp2.000
+        </div>
+
+        <div class="description">
+          Tarif Rp400 / menit
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki VIP - 5 Menit - Rp2.000'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          VIP 10 Menit
+        </h3>
+
+        <div class="price">
+          Rp4.000
+        </div>
+
+        <div class="description">
+          Tarif Rp400 / menit
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki VIP - 10 Menit - Rp4.000'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          VIP Durasi Lain
+        </h3>
+
+        <div class="price">
+          Rp400 / menit
+        </div>
+
+        <div class="description">
+          Bisa request durasi sesuai kebutuhan.
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Joki VIP - Request Durasi - Rp400/menit'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- AFK -->
+
+    <section class="category">
+
+      <h2>
+        😴 Jasa AFK
+      </h2>
+
+
+      <div class="card">
+
+        <h3>
+          AFK 1 Hari
+        </h3>
+
+        <div class="price">
+          Rp7.000
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa AFK - 1 Hari - Rp7.000'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          AFK 2 Hari
+        </h3>
+
+        <div class="price">
+          Rp13.000
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa AFK - 2 Hari - Rp13.000'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          AFK 3 Hari
+        </h3>
+
+        <div class="price">
+          Rp27.000
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa AFK - 3 Hari - Rp27.000'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          AFK Durasi Lain
+        </h3>
+
+        <div class="price">
+          Hubungi Kami
+        </div>
+
+        <div class="description">
+          Untuk durasi lebih lama,
+          silakan tanyakan harga terlebih dahulu.
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa AFK - Request Durasi'
+          )">
+
+          💬 Tanya Harga
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- PAKET -->
+
+    <section class="category">
+
+      <h2>
+        📦 Jasa Paket
+      </h2>
+
+
+      <div class="card">
+
+        <h3>
+          Paket 1 Hari + Joki Pet
+        </h3>
+
+        <div class="price">
+          Rp8.600
+        </div>
+
+        <div class="description">
+          Paket AFK 1 hari + joki pet.
+        </div>
+
+        <button
+          onclick="pesan(
+          'Jasa Paket - 1 Hari + Joki Pet - Rp8.600'
+          )">
+
+          💬 Pesan Sekarang
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <!-- ==================================
+       FOOTER
+  =================================== -->
+
+  <footer>
+
+    <p>
+      © 2026
+      <span class="wa">
+        Amba STR
+      </span>
+    </p>
+
+    <p>
+      Pesan jasa langsung melalui WhatsApp
+    </p>
+
+  </footer>
+
+
+  <!-- ==================================
+       JAVASCRIPT
+  =================================== -->
+
+  <script>
+
+    const nomorWA =
+      "6287755296046";
+
+
+    const intro =
+      document.getElementById("intro");
+
+
+    const huruf =
+      document.querySelectorAll(
+        ".store-animation span"
+      );
+
+
+    /* =========================
+       SUARA
+    ========================= */
+
+    let audioContext;
+
+
+    function bunyi() {
+
+      if (!audioContext) {
+
+        audioContext =
+          new (
+            window.AudioContext ||
+            window.webkitAudioContext
+          )();
+
+      }
+
+
+      const oscillator =
+        audioContext.createOscillator();
+
+
+      const gain =
+        audioContext.createGain();
+
+
+      oscillator.type =
+        "sine";
+
+
+      oscillator.frequency.setValueAtTime(
+        650,
+        audioContext.currentTime
+      );
+
+
+      oscillator.frequency.exponentialRampToValueAtTime(
+        900,
+        audioContext.currentTime + 0.08
+      );
+
+
+      gain.gain.setValueAtTime(
+        0.0001,
+        audioContext.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.25,
+        audioContext.currentTime + 0.01
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioContext.currentTime + 0.12
+      );
+
+
+      oscillator.connect(gain);
+
+      gain.connect(
+        audioContext.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        audioContext.currentTime + 0.13
+      );
+
+    }
+
+
+    /* =========================
+       ANIMASI HURUF
+    ========================= */
+
+    let index = 0;
+
+
+    function tampilkanHuruf() {
+
+      if (index >= huruf.length) {
+
+        setTimeout(
+          tutupIntro,
+          1000
+        );
+
+        return;
+      }
+
+
+      const h =
+        huruf[index];
+
+
+      h.classList.add(
+        "show"
+      );
+
+
+      bunyi();
+
+
+      index++;
+
+
+      setTimeout(
+        tampilkanHuruf,
+        300
+      );
+
+    }
+
+
+    /* =========================
+       TUTUP INTRO
+    ========================= */
+
+    function tutupIntro() {
+
+      intro.classList.add(
+        "hide"
+      );
+
+
+      setTimeout(
+        () => {
+          intro.remove();
+        },
+        900
+      );
+
+    }
+
+
+    /* =========================
+       LEWATI INTRO
+    ========================= */
+
+    function skipIntro() {
+
+      tutupIntro();
+
+    }
+
+
+    /* =========================
+       MULAI
+    ========================= */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        setTimeout(
+          tampilkanHuruf,
+          400
+        );
+
+      }
+    );
+
+
+    /* =========================
+       WHATSAPP
+    ========================= */
+
+    function pesan(jasa) {
+
+      const pesanWA =
+        "Halo kak 👋%0A%0A" +
+        "Saya mau pesan:%0A" +
+        "📦 " + jasa + "%0A%0A" +
+        "Mohon info untuk proses selanjutnya ya kak 🙏";
+
+
+      const link =
+        "https://wa.me/" +
+        nomorWA +
+        "?text=" +
+        pesanWA;
+
+
+      window.open(
+        link,
+        "_blank"
+      );
+
+    }
+
+  </script>
+
+</body>
+</html>
